@@ -4,7 +4,7 @@
   right: 0;
   z-index: 10;
   opacity: 0.25;
-  transition: opacity 0.3s;
+  transition: opacity 0.4s ease-in 0.2s;
 }
 
 .action-bar:hover {
