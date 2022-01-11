@@ -1,12 +1,16 @@
+// below is a type, describing the type of the Dispatch function that'll be provided to the redux thunk function.
+import { Dispatch } from 'redux';
 import { ActionType } from '../action-types';
 import { 
   UpdateCellAction, 
   DeleteCellAction, 
   MoveCellAction, 
   InsertCellAfterAction,
-  Direction
+  Direction,
+  Action
 } from '../actions';
 import { CellTypes } from '../cell';
+import bundle from '../../bundler';
 
 export const updateCell = (
   id: string, 
@@ -18,7 +22,7 @@ export const updateCell = (
       id,
       content
     }
-  }
+  };
 };
 
 export const deleteCell = (id: string): DeleteCellAction => {
@@ -52,4 +56,25 @@ export const insertCellAfter = (
       type: cellType
     }
   }
+};
+
+export const createBundle = (id: string, input: string) => {
+  return async (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.BUNDLE_START,
+      payload: {
+        id
+      }
+    });
+
+    const result = await bundle(input);
+    // with result, dispatch a second action - bundle_complete action
+    dispatch({
+      type: ActionType.BUNDLE_COMPLETE,
+      payload: {
+        id,
+        bundle: result
+      }
+    });
+  };
 };

@@ -20,19 +20,22 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
     });
     
     // not sure why this tabSize option is inside the onEditorDidMount callback - is it not possible as a prop to MonacoEditor?
-    monacoEditor.getModel().updateOptions({ tabSize: 2 });
+    monacoEditor.getModel()?.updateOptions({ tabSize: 2 });
   };
 
   const onFormatClick = () => {
     // get current value from editor
     const unformatted = editorRef.current.getModel().getValue();
     // format that value
-    const formatted = prettier.format(unformatted, {
-      parser: 'babel',
-      plugins: [parser],
-      semi: true,
-      singleQuote: true
-    }).replace(/\n$/, ''); // prettier automatically inserts a new line after the last line of code so we remove it
+    const formatted = prettier
+      .format(unformatted, {
+        parser: 'babel',
+        plugins: [parser],
+        semi: true,
+        singleQuote: true
+      })
+    // prettier automatically inserts a new line after the last line of code so we remove it
+      .replace(/\n$/, ''); 
 
     // set the formatted value back in the editor 
     editorRef.current.setValue(formatted);
@@ -43,8 +46,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
       <button 
         className="button button-format is-primary is-small" 
         onClick={onFormatClick}
-      >Format</button>
-
+      >
+        Format
+      </button>
       <MonacoEditor 
         editorDidMount={onEditorDidMount}
         value={initialValue}
