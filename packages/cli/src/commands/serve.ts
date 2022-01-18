@@ -3,6 +3,8 @@ import path from 'path'; // part of node standard library that helps calculate p
 import { Command } from 'commander';
 import { serve } from 'local-api';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 export const serveCommand = new Command() // customize the Command we create / export 
 // if a user runs 'hacker-canvas serve', it'll execute logic associated with this Command
   .command('serve [filename]') 
@@ -16,5 +18,5 @@ export const serveCommand = new Command() // customize the Command we create / e
   .action((filename = 'hackercanvasNotebok', options: { port: string }) => {
     const dir = path.join(process.cwd(), path.dirname(filename));
 
-    serve(parseInt(options.port), path.basename(filename), dir);
+     serve(parseInt(options.port), path.basename(filename), dir, !isProduction);
   });

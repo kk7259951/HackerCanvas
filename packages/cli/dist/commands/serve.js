@@ -8,6 +8,7 @@ exports.serveCommand = void 0;
 const path_1 = __importDefault(require("path")); // part of node standard library that helps calculate paths on a file system
 const commander_1 = require("commander");
 const local_api_1 = require("local-api");
+const isProduction = process.env.NODE_ENV === 'production';
 exports.serveCommand = new commander_1.Command() // customize the Command we create / export 
     // if a user runs 'hacker-canvas serve', it'll execute logic associated with this Command
     .command('serve [filename]')
@@ -20,5 +21,5 @@ exports.serveCommand = new commander_1.Command() // customize the Command we cre
     .option('-p, --port <number>', 'port to run server on', '4005')
     .action((filename = 'hackercanvasNotebok', options) => {
     const dir = path_1.default.join(process.cwd(), path_1.default.dirname(filename));
-    (0, local_api_1.serve)(parseInt(options.port), path_1.default.basename(filename), dir);
+    (0, local_api_1.serve)(parseInt(options.port), path_1.default.basename(filename), dir, !isProduction);
 });
